@@ -24,11 +24,16 @@ export async function apiRequest<Result>(
       if (body && typeof body === 'object' && 'message' in body) {
         if (typeof body.message === 'string') message = body.message
         else if (Array.isArray(body.message)) {
-          message = body.message.filter((entry) => typeof entry === 'string').join('. ')
+          message = body.message
+            .filter((entry) => typeof entry === 'string')
+            .join('. ')
         }
       }
     } catch {
-      message = response.status >= 500 ? 'The server is unavailable. Please try again.' : message
+      message =
+        response.status >= 500
+          ? 'The server is unavailable. Please try again.'
+          : message
     }
     throw new ApiError(message, response.status)
   }
@@ -37,5 +42,7 @@ export async function apiRequest<Result>(
 }
 
 export function errorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : 'Something went wrong. Please try again.'
+  return error instanceof Error
+    ? error.message
+    : 'Something went wrong. Please try again.'
 }

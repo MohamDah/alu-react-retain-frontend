@@ -27,7 +27,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsAuthenticating(false)
       }
     }
-    const timeout = window.setTimeout(expire, Math.max(0, session.expiresAt - Date.now()))
+    const timeout = window.setTimeout(
+      expire,
+      Math.max(0, session.expiresAt - Date.now()),
+    )
     window.addEventListener('focus', expire)
     return () => {
       window.clearTimeout(timeout)
@@ -44,7 +47,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify(credentials),
       })
       const nextSession = createSession(response)
-      if (version !== requestVersion.current) throw new Error('Authentication was cancelled.')
+      if (version !== requestVersion.current)
+        throw new Error('Authentication was cancelled.')
       saveSession(nextSession)
       setSession(nextSession)
       return nextSession.user
@@ -54,16 +58,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{
-      user: session?.user ?? null,
-      token: session?.token ?? null,
-      role: session?.user.role ?? null,
-      isAuthenticated: session !== null,
-      isAuthenticating,
-      login: (credentials) => authenticate('/auth/signin', credentials),
-      register: (credentials) => authenticate('/auth/signup', credentials),
-      logout,
-    }}>
+    <AuthContext.Provider
+      value={{
+        user: session?.user ?? null,
+        token: session?.token ?? null,
+        role: session?.user.role ?? null,
+        isAuthenticated: session !== null,
+        isAuthenticating,
+        login: (credentials) => authenticate('/auth/signin', credentials),
+        register: (credentials) => authenticate('/auth/signup', credentials),
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )

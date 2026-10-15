@@ -3,11 +3,20 @@ import type { Budget, Expense } from '../types'
 import { budgetStatus, moneyToCents, monthlySummary } from './dashboard'
 
 const expenses: Expense[] = ['0.10', '0.20', '12.00'].map((amount, index) => ({
-  id: String(index), title: `Expense ${index}`, amount, categoryId: 'food',
-  category: { id: 'food', name: 'Food', isDefault: false }, date: index === 2 ? '2026-09-30' : '2026-10-01',
-  paymentMethod: 'Card', notes: null, userId: 'user', createdAt: '2026-10-01',
+  id: String(index),
+  title: `Expense ${index}`,
+  amount,
+  categoryId: 'food',
+  category: { id: 'food', name: 'Food', isDefault: false },
+  date: index === 2 ? '2026-09-30' : '2026-10-01',
+  paymentMethod: 'Card',
+  notes: null,
+  userId: 'user',
+  createdAt: '2026-10-01',
 }))
-const budgets: Budget[] = [{ id: 'budget', amount: '1.00', month: 10, year: 2026, userId: 'user' }]
+const budgets: Budget[] = [
+  { id: 'budget', amount: '1.00', month: 10, year: 2026, userId: 'user' },
+]
 
 describe('dashboard calculations', () => {
   it('adds integer cents and isolates the selected month', () => {
@@ -15,11 +24,19 @@ describe('dashboard calculations', () => {
     expect(result.totalCents).toBe(30)
     expect(result.remainingCents).toBe(70)
     expect(result.highest?.amount).toBe('0.20')
-    expect(result.categories).toEqual([{ id: 'food', name: 'Food', cents: 30, count: 2 }])
+    expect(result.categories).toEqual([
+      { id: 'food', name: 'Food', cents: 30, count: 2 },
+    ])
   })
 
   it('distinguishes no budget and no expenses from zero remaining', () => {
-    expect(monthlySummary([], [], '2026-10')).toMatchObject({ totalCents: 0, budgetCents: null, remainingCents: null, highest: null, categories: [] })
+    expect(monthlySummary([], [], '2026-10')).toMatchObject({
+      totalCents: 0,
+      budgetCents: null,
+      remainingCents: null,
+      highest: null,
+      categories: [],
+    })
   })
 
   it('uses the exact 80% and 100% rubric boundaries', () => {
