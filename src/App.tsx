@@ -3,9 +3,12 @@ import { NavLink, Outlet, Route, Routes } from 'react-router-dom'
 import { useAuth } from './auth/auth-context'
 import { AdminRoute, HomeRedirect, ProtectedRoute, PublicRoute } from './auth/RouteGuards'
 import { AuthPage } from './pages/AuthPage'
+import { resetFilters } from './store/FilterSlice'
+import { useAppDispatch } from './store/hooks'
 
 function AppLayout() {
   const { user, role, logout } = useAuth()
+  const dispatch = useAppDispatch()
   const links = [
     { to: '/dashboard', label: 'Dashboard' },
     { to: '/expenses', label: 'Expenses' },
@@ -25,7 +28,7 @@ function AppLayout() {
           </div>
           <div className="flex min-w-0 items-center gap-3">
             <span className="hidden max-w-64 truncate text-sm text-muted md:block">{user?.email}</span>
-            <button onClick={logout} type="button" className="icon-button" title="Sign out" aria-label="Sign out"><LogOut className="size-5" /></button>
+            <button onClick={() => { dispatch(resetFilters()); logout() }} type="button" className="icon-button" title="Sign out" aria-label="Sign out"><LogOut className="size-5" /></button>
           </div>
         </div>
         <nav aria-label="Main navigation" className="mx-auto flex max-w-7xl flex-wrap gap-x-5 gap-y-2 px-4 pb-3 md:px-6 lg:px-8">
