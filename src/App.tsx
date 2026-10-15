@@ -6,6 +6,8 @@ import { AuthPage } from './pages/AuthPage'
 import { UserDashboard } from './pages/UserDashboard'
 import { ExpenseList } from './pages/ExpenseList'
 import { BudgetsPage } from './pages/BudgetsPage'
+import { AdminDashboard } from './pages/AdminDashboard'
+import { AdminCategories } from './pages/AdminCategories'
 import { resetFilters } from './store/FilterSlice'
 import { useAppDispatch } from './store/hooks'
 
@@ -45,10 +47,6 @@ function AppLayout() {
   )
 }
 
-function RoutePage({ title }: { title: string }) {
-  return <h1 className="text-2xl font-semibold text-ink">{title}</h1>
-}
-
 function App() {
   return (
     <Routes>
@@ -62,8 +60,8 @@ function App() {
           <Route path="/expenses" element={<ExpenseList />} />
           <Route path="/budgets" element={<BudgetsPage />} />
           <Route element={<AdminRoute />}>
-            <Route path="/admin/dashboard" element={<RoutePage title="Admin dashboard" />} />
-            <Route path="/admin/categories" element={<RoutePage title="Categories" />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/categories" element={<AdminCategories />} />
           </Route>
         </Route>
       </Route>
