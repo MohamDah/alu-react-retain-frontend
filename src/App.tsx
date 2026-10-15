@@ -4,6 +4,7 @@ import { useAuth } from './auth/auth-context'
 import { AdminRoute, HomeRedirect, ProtectedRoute, PublicRoute } from './auth/RouteGuards'
 import { AuthPage } from './pages/AuthPage'
 import { UserDashboard } from './pages/UserDashboard'
+import { ExpenseList } from './pages/ExpenseList'
 import { resetFilters } from './store/FilterSlice'
 import { useAppDispatch } from './store/hooks'
 
@@ -57,7 +58,7 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
           <Route path="/dashboard" element={<UserDashboard />} />
-          <Route path="/expenses" element={<RoutePage title="Expenses" />} />
+          <Route path="/expenses" element={<ExpenseList />} />
           <Route path="/budgets" element={<RoutePage title="Budgets" />} />
           <Route element={<AdminRoute />}>
             <Route path="/admin/dashboard" element={<RoutePage title="Admin dashboard" />} />
