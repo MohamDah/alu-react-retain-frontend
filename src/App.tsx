@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { LogOut, Wallet } from 'lucide-react'
 import { NavLink, Outlet, Route, Routes } from 'react-router-dom'
 import { useAuth } from './auth/auth-context'
@@ -14,6 +15,7 @@ import { useAppDispatch } from './store/hooks'
 function AppLayout() {
   const { user, role, logout } = useAuth()
   const dispatch = useAppDispatch()
+  useEffect(() => () => { dispatch(resetFilters()) }, [dispatch])
   const links = [
     { to: '/dashboard', label: 'Dashboard' },
     { to: '/expenses', label: 'Expenses' },
