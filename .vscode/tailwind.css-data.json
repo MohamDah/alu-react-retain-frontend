@@ -4,6 +4,10 @@
     {
       "name": "@theme",
       "description": "Defines Tailwind CSS v4 theme tokens."
+    },
+    {
+      "name": "@apply",
+      "description": "Applies Tailwind utility styles within a CSS rule."
     }
   ]
 }

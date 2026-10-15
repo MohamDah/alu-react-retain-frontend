@@ -40,3 +40,21 @@
     outline-offset: 3px;
   }
 }
+
+@layer components {
+  .field {
+    @apply block min-h-11 w-full rounded-md border border-line bg-white px-3 py-2 text-sm text-ink disabled:opacity-60;
+  }
+
+  .button-primary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .button-secondary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-line bg-white px-4 py-2 text-sm font-medium hover:bg-canvas disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .icon-button {
+    @apply inline-flex size-11 shrink-0 items-center justify-center rounded-md text-muted hover:bg-canvas hover:text-ink disabled:cursor-not-allowed disabled:opacity-40;
+  }
+}
