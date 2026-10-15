@@ -79,9 +79,23 @@ against a live database.
 
 ## API And Sessions
 
-During development Vite proxies `/api/*` to `http://127.0.0.1:3000/*`.
-Start the backend separately. Production hosting must provide the equivalent
-same-origin proxy and serve `index.html` for frontend route requests.
+The API client reads `VITE_API_BASE_URL` at build time. For Netlify, set it to
+the Render backend's HTTPS origin, for example
+`https://retain-api.onrender.com` (no `/api` suffix). Netlify builds a static
+bundle, so changing the variable requires a new deploy. The client appends API
+paths such as `/auth/signin` to this origin.
+
+For local development, leave `VITE_API_BASE_URL` unset: Vite proxies `/api/*`
+to `http://127.0.0.1:3000/*`. A tracked `.env.example` documents the production
+setting; create a local `.env.local` only if you want to bypass the proxy.
+On Render, set `FRONTEND_ORIGIN` to the exact Netlify site origin, for example
+`https://retain-app.netlify.app`, and include any custom domain as a
+comma-separated origin. Nest CORS permits only those configured origins. No
+same-origin Netlify proxy is required.
+
+Deploy the backend and frontend independently. The browser talks directly to
+Render, so the backend must be reachable over HTTPS and its CORS allowlist must
+match the origin shown in the browser address bar.
 
 Login and registration call `/auth/signin` and `/auth/signup`. Sessions persist
 in `sessionStorage` for the current tab and expire after the API token lifetime.

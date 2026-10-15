@@ -21,9 +21,23 @@ beforeEach(() => {
   fetchMock.mockReset()
   vi.stubGlobal('fetch', fetchMock)
 })
-afterEach(() => vi.unstubAllGlobals())
+afterEach(() => {
+  vi.unstubAllGlobals()
+  vi.unstubAllEnvs()
+})
 
 describe('API resource loading', () => {
+  it('uses the configured API origin and normalizes trailing slashes', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'https://retain-api.onrender.com///')
+    fetchMock.mockResolvedValueOnce(Response.json({ ok: true }))
+
+    await apiRequest('/auth/signin')
+
+    expect(fetchMock.mock.calls[0]?.[0]).toBe(
+      'https://retain-api.onrender.com/auth/signin',
+    )
+  })
+
   it('loads every API page and deduplicates IDs without losing token or signal', async () => {
     fetchMock.mockResolvedValueOnce(
       Response.json({ items: [expense('first')], totalPages: 2 }),

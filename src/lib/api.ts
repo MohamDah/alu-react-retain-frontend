@@ -8,6 +8,11 @@ export class ApiError extends Error {
   }
 }
 
+function apiUrl(path: string): string {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '') || '/api'
+  return `${baseUrl}/${path.replace(/^\/+/, '')}`
+}
+
 export async function apiRequest<Result>(
   path: string,
   options: RequestInit = {},
@@ -16,7 +21,7 @@ export async function apiRequest<Result>(
   const headers = new Headers(options.headers)
   if (options.body) headers.set('Content-Type', 'application/json')
   if (token) headers.set('Authorization', `Bearer ${token}`)
-  const response = await fetch(`/api${path}`, { ...options, headers })
+  const response = await fetch(apiUrl(path), { ...options, headers })
   if (!response.ok) {
     let message = `Request failed (${response.status})`
     try {
