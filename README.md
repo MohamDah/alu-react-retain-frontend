@@ -15,6 +15,7 @@ npm run dev
 ```sh
 npm run build
 npm run lint
+npm test
 ```
 
 Tailwind is integrated through `@tailwindcss/vite`. Global styles and theme
@@ -27,13 +28,54 @@ sans-serif fallback when offline.
 - `src/App.tsx`: minimal application shell, ready for routing.
 - `src/auth/`: AuthContext, tab-scoped session persistence, expiry, and route guards.
 - Authentication uses React Context only; session data is never stored in Redux.
-- Expense filtering, searching, and sorting will use Redux Toolkit only.
+- `src/store/`: Redux Toolkit FilterSlice, store, typed hooks, and pure filtering/sorting.
+- Redux contains only `searchQuery`, `categoryId`, `paymentMethod`, `startDate`,
+  `endDate`, `sortBy`, and `sortOrder`. Filters reset when a session ends.
 - React Router v6 defines public, authenticated, and admin-only routes.
-- Data screens are not implemented yet.
+- `src/hooks/useResource.ts`: cancellable API data in component state, never in Context or Redux.
+- `src/pages/`: login, registration, monthly dashboard, expenses, budgets, admin dashboard, and categories.
+- `src/components/`: shared request status, budget progress, and native-dialog expense forms.
 
 The backend serializes monetary values as decimal strings and dates as ISO
 strings. Preserve those API types and convert values explicitly for display
 or calculations.
+
+## Routes And Data
+
+Public routes: `/login`, `/register`.
+Authenticated routes: `/dashboard`, `/expenses`, `/budgets`.
+Admin routes: `/admin/dashboard`, `/admin/categories`.
+Admin accounts can also access the authenticated user routes. Registration
+creates a USER account; ADMIN roles are assigned through backend administration,
+not by the frontend or the signup form.
+
+The expense API has date-descending pagination but no amount-sort parameter.
+The frontend loads all 100-item API pages, then applies Redux filters and sorts
+before paginating the table into 10-row pages. This is suitable for the personal
+expense scope; larger datasets should add backend sorting before adopting
+server-side table pagination. Concurrent edits during a multi-page fetch can
+still affect the snapshot; duplicate IDs are removed.
+
+Dashboard summaries use the selected UTC calendar month. The highest expense
+and category breakdown are monthly; recent expenses are the latest five by
+expense date across all months. Budgets show unset, within-budget (up to 80%),
+approaching (over 80% through 100%), and over-budget (over 100%) states.
+Money calculations use integer cents. USD is the current display currency
+because the backend has no currency field; change the formatter and form labels
+together if the application uses another currency.
+
+Expense, budget, and admin category forms call the existing POST/PATCH/DELETE
+endpoints. Uncategorized is protected; deleting another category reassigns
+its expenses to Uncategorized on the backend.
+
+## Verification
+
+`npm test` covers filters, numerical sorting, inclusive date boundaries,
+dashboard totals, budget thresholds, session persistence/expiry, and paginated
+API loading/error handling. Browser checks exercised auth and role guards,
+forms, pagination, retry/401 behavior, and mobile/desktop layouts with mocked
+API responses. Those browser checks do not certify authenticated integration
+against a live database.
 
 ## API And Sessions
 
