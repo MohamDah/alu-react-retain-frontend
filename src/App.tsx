@@ -3,6 +3,7 @@ import { NavLink, Outlet, Route, Routes } from 'react-router-dom'
 import { useAuth } from './auth/auth-context'
 import { AdminRoute, HomeRedirect, ProtectedRoute, PublicRoute } from './auth/RouteGuards'
 import { AuthPage } from './pages/AuthPage'
+import { UserDashboard } from './pages/UserDashboard'
 import { resetFilters } from './store/FilterSlice'
 import { useAppDispatch } from './store/hooks'
 
@@ -55,7 +56,7 @@ function App() {
       </Route>
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
-          <Route path="/dashboard" element={<RoutePage title="Dashboard" />} />
+          <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/expenses" element={<RoutePage title="Expenses" />} />
           <Route path="/budgets" element={<RoutePage title="Budgets" />} />
           <Route element={<AdminRoute />}>
