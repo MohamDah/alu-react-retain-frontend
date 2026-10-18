@@ -79,17 +79,21 @@ against a live database.
 
 ## API And Sessions
 
+Deployed frontend: https://retain-mohamdah.netlify.app/
+
+Deployed backend API: https://alu-react-retain-backend.onrender.com
+
 The API client reads `VITE_API_BASE_URL` at build time. For Netlify, set it to
-the Render backend's HTTPS origin, for example
-`https://retain-api.onrender.com` (no `/api` suffix). Netlify builds a static
+the Render backend's HTTPS origin
+`https://alu-react-retain-backend.onrender.com` (no `/api` suffix). Netlify builds a static
 bundle, so changing the variable requires a new deploy. The client appends API
 paths such as `/auth/signin` to this origin.
 
 For local development, leave `VITE_API_BASE_URL` unset: Vite proxies `/api/*`
 to `http://127.0.0.1:3000/*`. A tracked `.env.example` documents the production
 setting; create a local `.env.local` only if you want to bypass the proxy.
-On Render, set `FRONTEND_ORIGIN` to the exact Netlify site origin, for example
-`https://retain-app.netlify.app`, and include any custom domain as a
+On Render, set `FRONTEND_ORIGIN` to the exact Netlify site origin
+`https://retain-mohamdah.netlify.app`, and include any custom domain as a
 comma-separated origin. Nest CORS permits only those configured origins. No
 same-origin Netlify proxy is required.
 
