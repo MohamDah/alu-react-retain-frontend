@@ -104,10 +104,10 @@ guards are UI controls only: the backend must enforce JWT validity and roles.
 
 ## Dependency Security
 
-React Router is intentionally on v6 to meet the rubric. As of 2026-10-11,
+React Router currently uses v6. As of 2026-10-11,
 `npm audit` reports two moderate findings with no patched v6 release:
 GHSA-wrjc-x8rr-h8h6 (open redirects) and GHSA-337j-9hxr-rhxg (SSR hydration).
 The app uses fixed internal navigation targets and BrowserRouter without SSR.
 These constraints limit exposure but do not remove the dependency advisories.
-See `docs/router-cve-report.json`. A clean audit requires approval to move to
-React Router 7.18.0 or newer; do not run `npm audit fix --force` under the v6 rubric.
+See `docs/router-cve-report.json`. Clearing these advisories requires upgrading
+to React Router 7.18.0 or newer, which changes the required major version.

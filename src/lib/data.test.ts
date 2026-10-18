@@ -20,6 +20,7 @@ const expense = (id: string): Expense => ({
 beforeEach(() => {
   fetchMock.mockReset()
   vi.stubGlobal('fetch', fetchMock)
+  vi.stubEnv('VITE_API_BASE_URL', '')
 })
 afterEach(() => {
   vi.unstubAllGlobals()
