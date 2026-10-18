@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import {
   ChevronLeft,
   ChevronRight,
+  Eye,
   Pencil,
   Plus,
   RotateCcw,
@@ -39,6 +40,7 @@ export function ExpenseList() {
   const dispatch = useAppDispatch()
   const filters = useAppSelector((state) => state.filters)
   const [page, setPage] = useState(1)
+  const [detail, setDetail] = useState<Expense | null>(null)
   const [editor, setEditor] = useState<{ expense: Expense | null } | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<Expense | null>(null)
   const [deleting, setDeleting] = useState(false)
@@ -333,6 +335,15 @@ export function ExpenseList() {
                       <div className="flex justify-end">
                         <button
                           type="button"
+                          onClick={() => setDetail(expense)}
+                          className="icon-button"
+                          title={`View ${expense.title}`}
+                          aria-label={`View ${expense.title}`}
+                        >
+                          <Eye className="size-4" />
+                        </button>
+                        <button
+                          type="button"
                           onClick={() => setEditor({ expense })}
                           className="icon-button"
                           title={`Edit ${expense.title}`}
@@ -428,6 +439,43 @@ export function ExpenseList() {
             expenses.reload()
           }}
         />
+      )}
+      {detail && (
+        <Modal title="Expense details" onClose={() => setDetail(null)}>
+          <h3 className="mb-5 break-words text-lg font-semibold">
+            {detail.title}
+          </h3>
+          <dl className="grid gap-x-6 gap-y-4 text-sm sm:grid-cols-2">
+            <div>
+              <dt className="text-xs font-medium text-muted">Amount</dt>
+              <dd className="mt-1 font-medium tabular-nums">
+                {formatMoney(moneyToCents(detail.amount))}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium text-muted">Category</dt>
+              <dd className="mt-1 break-words">{detail.category.name}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium text-muted">Date</dt>
+              <dd className="mt-1">{formatDate(detail.date)}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium text-muted">Payment method</dt>
+              <dd className="mt-1 break-words">{detail.paymentMethod}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-medium text-muted">Added</dt>
+              <dd className="mt-1">{formatDate(detail.createdAt)}</dd>
+            </div>
+            <div className="sm:col-span-2">
+              <dt className="text-xs font-medium text-muted">Notes</dt>
+              <dd className="mt-1 whitespace-pre-wrap break-words">
+                {detail.notes || 'No notes'}
+              </dd>
+            </div>
+          </dl>
+        </Modal>
       )}
       {deleteTarget && (
         <Modal

@@ -1,4 +1,4 @@
-import { Banknote, Receipt, Users } from 'lucide-react'
+import { Banknote, CalendarDays, Receipt, Users } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { ResourceStatus } from '../components/ResourceStatus'
@@ -89,7 +89,7 @@ export function AdminDashboard() {
             {data.currentMonth.totalExpenses.toLocaleString()} expenses this
             month
           </p>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
+          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <StatCard
               title="Total users"
               value={data.totalRegisteredUsers.toLocaleString()}
@@ -103,9 +103,15 @@ export function AdminDashboard() {
               color="text-sky-600"
             />
             <StatCard
-              title="Current month volume"
-              value={formatMoney(moneyToCents(data.currentMonth.totalValue))}
+              title="Total value recorded"
+              value={formatMoney(moneyToCents(data.totalValueOfExpenses))}
               icon={Banknote}
+              color="text-brand"
+            />
+            <StatCard
+              title="Current month spending"
+              value={formatMoney(moneyToCents(data.currentMonth.totalValue))}
+              icon={CalendarDays}
               color="text-rose-500"
             />
           </div>
@@ -115,11 +121,11 @@ export function AdminDashboard() {
               items={data.spendingPerCategory}
             />
             <CategoryList
-              title="Top 5 categories"
+              title="Top 5 most-used categories"
               items={data.top5Categories}
             />
             <CategoryList
-              title="Bottom 5 categories"
+              title="Bottom 5 least-used categories"
               items={data.bottom5Categories}
             />
           </div>
